@@ -1,0 +1,49 @@
+@import url('https://fonts.cdnfonts.com/css/kindegarten');
+
+body {
+    font-family: 'Kindegarten', sans-serif;
+    background-image: url('Images/Background.jpg');
+    text-align: center;
+}
+
+#title {
+    margin-top: 100px;
+    line-height: 10px;
+}
+
+#subtitle {
+    opacity: 0.7;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+#calendar-container {
+    display: flex;
+}
+
+#calendar {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px 20px 40px 40px;
+    margin: auto;
+    text-align: center;
+    width: 70%;
+}
+
+
+#calendar-heading {
+    display: flex;
+    justify-content: space-between;
+    border-radius: 10px 10px 0px 0px;
+    border: 2px solid black;
+    padding: 0px 20px;
+    font-size: 20px;
+    background-color: skyblue;
+    line-height: 0px;
+}
+
+.calendar-content {
+    padding: 20px;
+    border: 2px solid black;
+}
