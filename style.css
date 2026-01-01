@@ -28,9 +28,8 @@ body {
     border-radius: 20px 20px 40px 40px;
     margin: auto;
     text-align: center;
-    width: 70%;
+    width: 85%;
 }
-
 
 #calendar-heading {
     display: flex;
@@ -46,4 +45,19 @@ body {
 .calendar-content {
     padding: 20px;
     border: 2px solid black;
+}
+
+.calendar-content .days {
+    display: flex;
+}
+
+.days .day {
+    width: 30px;
+    margin: 5px;
+    padding: 15px;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 20px;
+    border: 2px solid black;
+    background-color: rgb(64, 94, 192);
 }
