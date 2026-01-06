@@ -1,106 +1,160 @@
-/*GET THE DATE*/
-var date = new Date();
-console.log(date)
+/* ============================= */
+/* GET TODAY'S DATE INFORMATION */
+/* ============================= */
 
-/*EXTRACT THE CURRENT DATE INFO*/
-var currentMonth = date.getMonth(); 
-var currentDay = date.getDay();
-var currentDate = date.getDate();
-var currentYear = date.getFullYear();
+/* Create a Date object (gives current date & time) */
+var date = new Date();
+console.log(date);
+
+/* Extract useful date values */
+var currentMonth = date.getMonth();   // 0–11
+var currentDate  = date.getDate();    // 1–31
+var currentYear  = date.getFullYear();
 
 console.log(currentMonth);
-console.log(currentDay);
 console.log(currentDate);
 console.log(currentYear);
 
-/* IMPORTANT DATE INFO*/
+
+/* ============================= */
+/* IMPORTANT DATE CONSTANTS */
+/* ============================= */
+
+/* Month names — index matches getMonth() */
 var months = [
-    "January", //0
-    "February",//1
-    "March",//2
-    "April",//3
-    "May",//4
-    "June",//5
-    "July",//6
-    "August",//7
-    "September",//8
-    "October",//9
-    "November",//10
-    "December"//11
+    "January",   // 0
+    "February",  // 1
+    "March",     // 2
+    "April",     // 3
+    "May",       // 4
+    "June",      // 5
+    "July",      // 6
+    "August",    // 7
+    "September", // 8
+    "October",   // 9
+    "November",  // 10
+    "December"   // 11
 ];
 
-/* SET THE CORRECT MONTH */
+
+/* ============================= */
+/* SET THE MONTH TITLE */
+/* ============================= */
+
+/* Grab the title element */
 var title = document.getElementById("title");
+
+/* Show the current month name */
 title.innerHTML = months[currentMonth];
 
-/* UPDATE THE CALENDER INFO */
-var habitTitle = document.getElementById("habit-title"); //reference to the title
-habitTitle.onclick = function() { // change the title
 
-    //ask question & save the answet to "habits"
-    let habits = prompt("Whats your habit", habitTitle.innerHTML)
-    if(habits.length == 0 ){ //uf they didnt type anything
-        habitTitle.innerHTML = "click to set your habit"
-    } 
-    else{ //update the habit to show what they typed
-        habitTitle.innerHTML = habits; 
+/* ============================= */
+/* UPDATE HABIT TITLE ON CLICK */
+/* ============================= */
+
+/* Reference the habit title */
+var habitTitle = document.getElementById("habit-title");
+
+/* Change habit when clicked */
+habitTitle.onclick = function () {
+
+    /* Ask user for a habit */
+    let habits = prompt("What's your habit?", habitTitle.innerHTML);
+
+    /* If user cancels or enters nothing */
+    if (!habits || habits.length === 0) {
+        habitTitle.innerHTML = "Click to set your habit";
+    }
+    else {
+        /* Update habit title */
+        habitTitle.innerHTML = habits;
+    }
+};
+
+
+/* ============================= */
+/* DAYS IN CURRENT MONTH */
+/* ============================= */
+
+/* Number of days in each month */
+var daysInTheMonthList = [
+    31, 28, 31, 30, 31, 30,
+    31, 31, 30, 31, 30, 31
+];
+
+/* Get days for the current month */
+var daysInTheMonth = daysInTheMonthList[currentMonth];
+// Example: index 5 → June → 30 days
+
+
+/* ============================= */
+/* TOTAL DAYS COUNTER */
+/* ============================= */
+
+var daysCompleted = 0;
+
+/* Reference the counter text */
+var totalDays = document.getElementById("total-days");
+
+/* Initial counter text */
+totalDays.innerHTML = "0/" + daysInTheMonth;
+
+
+/* ============================= */
+/* BUILD CALENDAR DAYS */
+/* ============================= */
+
+/* Reference the tracker grid */
+var tracker = document.getElementById("tracker");
+
+/* Create each day dynamically */
+for (var i = 1; i <= daysInTheMonth; i++) {
+
+    /* Create a new day circle */
+    var day = document.createElement("div");
+    day.className = "day";
+    day.innerHTML = i;
+
+    /* Highlight today */
+    if (i === currentDate) {
+        day.style.border = "3px solid black";
+        day.style.backgroundColor = "skyblue";
     }
 
+    /* Toggle completion on click */
+    day.onclick = function () {
+
+        /* Toggle completed state */
+        this.classList.toggle("completed");
+
+        /* Update completed count */
+        updateCompletedCount();
+    };
+
+    /* Add day to calendar */
+    tracker.appendChild(day);
 }
 
-//* SET THE TOTAL DAYS */
-var daysInTheMonthList = [31, 28, 31, 30, 31, 30, 31, 30, 31, 30, 31, 30]
-var daysInTheMonth = daysInTheMonthList[currentMonth]
-// Ex. 5th index => 6th month => June => 30 days
 
-var dayCompleted = 0;
-var totalDays = document.getElementById("totalDays"); //reference to the 
-totalDays.innerHTML = "0/" + daysInTheMonth; //update the fraction
+/* ============================= */
+/* UPDATE COMPLETED COUNTER */
+/* ============================= */
 
-//* SETUP THE CALENDER DAYS *//
-var dayCount = 0;
-var rowCount = 0;
-var days = document.getElementById("Days"); // store a list of all days
+function updateCompletedCount() {
 
-for(var i=0; i > days.length; i++) { // search each row one by one
-    var day = days[rowCount].getElementByClassName("Day"); //temporarily 
-    for ( var j=0; j < day.length; j++) { //grab a colmun one by one
+    /* Count completed days */
+    daysCompleted =
+        document.querySelectorAll(".day.completed").length;
 
-        // add a border to the current date
-        if(dayCount == currentDate - 1) {
-            day[j].setAttribute("Style","color:rgba(234, 1, 144), solid black");
-            day[j].setAttribute("Style","border:2px, solid black");
-        }
-
-        //update the correct date number and id and hide any excess numbers
-        if (dayCount < daysInTheMonth) {
-            day[j].innerHTML = dayCount + 1;
-            day[j].setAttribute("id", "day" + (dayCount + 1));
-            dayCount++; // Repeat evryday
-        }
-        else {
-            day[j].innerHTML = "";
-            day[j].setAttribute("style", "background-color:white");
-        }
-    }
-    rowCount++;
+    /* Update text */
+    totalDays.innerHTML =
+        daysCompleted + "/" + daysInTheMonth;
 }
 
-var completed =  new Array(31);
-for (var i = 0; i < dayCount; i++) {
-    var tempString = 
-    "" + (currentMonth + 1) + "=" + (i + 1) + "-" + currentYear;
-    console.log("Storing date: " + tempString);
-    var tempDay = localStorage.getItem(tempString);
-    console.log(tempDay);
-    if(tempDay == null || tempDay == "false"){
-        localStorage.setItem(tempString, "false");
-    }
-    else if (tempDay == "true") {
-        daysCompleted++;
-    }
-    totalDays.innerHTML = daysCompleted + "/" + daysInTheMonth;
-}
 
-console.log("Completed array: " + completed);
-console.log("total days completed: " + daysCompleted);
+/* ============================= */
+/* DEBUG LOGS */
+/* ============================= */
+
+console.log("Days in month:", daysInTheMonth);
+console.log("Current date:", currentDate);
