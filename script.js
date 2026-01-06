@@ -158,3 +158,50 @@ function updateCompletedCount() {
 
 console.log("Days in month:", daysInTheMonth);
 console.log("Current date:", currentDate);
+
+/* ============================= */
+/* CHECK STORAGE AND UPDATE COMPLETED ARRAY */
+/* ============================= */
+
+for (var i=0; i < currentDate; i++) {
+    var tempString =
+    "" + (currentMonth + 1) + "-" + (i + 1) + "-" + currentYear;
+    console.log(tempString);
+    
+    var choosenDay = localStorage.getItem(tempString);
+    console.log(i + 1 + ": " + choosenDay);
+    var choosenDayDiv = document.getElementById("day" + (i + 1));
+    if (choosenDay === "true") {
+        choosenDayDiv.style.backgroundColor = "skyblue";
+    } else if (choosenDay === "false") {
+        choosenDayDiv.style.backgroundColor = "white";
+    }
+}
+
+var dayDivs = document.querySelectorAll(".day");
+for (var i=0, i < currentDate; i++) {
+    dayDivs[i].onclick = function (e) {
+        var num = e.target.innerText;
+        var selectedDate = document.getElementById(e.target.id);
+        var storageString = 
+        "" + (currentMonth + 1) + "-" + currentYear;
+        
+    if(localStorage.getItem(storageString) === "false"){
+        selectedDate.style.backgroundColor = "skyblue";
+        localStorage.setItem(storageString, true);
+        daysCompleted++;
+    } else if(localStorage.getItem(storageString) === "true"){
+        selectedDate.style.backgroundColor = "white";
+        localStorage.setItem(storageString, false);
+        daysCompleted--;
+    }
+
+    totalDays.innerHTML = daysCompleted + "/" + dayCount;
+    console.log(daysCompleted, currentDate);
+    if(daysCompleted === currentDate){
+        alert("great progress");
+    }
+
+
+    }
+}
