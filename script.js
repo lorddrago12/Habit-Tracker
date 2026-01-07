@@ -201,7 +201,22 @@ for (var i=0, i < currentDate; i++) {
     if(daysCompleted === currentDate){
         alert("great progress");
     }
-
-
     }
 }
+
+/* ============================= */
+/* RESET BUTTON */
+/* ============================= */
+
+var resetButton = document.getElementById("resetbutton")
+resetButton.onclick = function () {
+    for (var i = 0; i < dayCount; i++)
+        var tempStrings = 
+            "" + (currentMonth + 1) + "-" + (i + 1) + "-" + currentYear;
+        console.log(tempStrings);
+        localStorage.setItem(tempStrings ,"false");
+        var curDay = document.getElementById("day" + (i + 1));
+        curDay.style.backgroundColor = "white";
+}
+daysCompleted = 0;
+totalDays.innerHTML = daysCompleted + "/" + daysInTheMonth;
