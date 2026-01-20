@@ -2,19 +2,17 @@
 
 body {
     font-family: 'Kindegarten', sans-serif;
-    background-image: url('Images/Background.jpg');
+    background-image: url('Images/Background.jpg'); /* SAME AS BEFORE */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
     text-align: center;
 }
 
-#title {
-    margin-top: 100px;
-    line-height: 10px;
-}
 
-#subtitle {
-    opacity: 0.7;
-    font-size: 18px;
-    margin-top: 20px;
+#title {
+    margin-top: 60px;
 }
 
 #calendar-container {
@@ -22,33 +20,30 @@ body {
 }
 
 #calendar {
-    display: flex;
-    flex-direction: column;
     background-color: white;
-    border-radius: 20px 20px 40px 40px;
     margin: auto;
-    text-align: center;
     width: 85%;
+    border-radius: 20px;
+    border: 2px solid black;
 }
 
 #calendar-heading {
     display: flex;
     justify-content: space-between;
-    border-radius: 10px 10px 0px 0px;
-    border: 2px solid black;
-    padding: 0px 20px;
-    font-size: 20px;
+    padding: 10px 20px;
     background-color: skyblue;
-    line-height: 0px;
+    border-bottom: 2px solid black;
 }
 
 .calendar-content {
     padding: 20px;
-    border: 2px solid black;
 }
 
-.calendar-content .days {
-    display: flex;
+#tracker {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    justify-items: center;
 }
 
 .day {
@@ -57,13 +52,17 @@ body {
     line-height: 45px;
     border-radius: 50%;
     font-weight: bold;
-    text-align: center;
+    cursor: pointer;
+    border: 2px solid black;
+    transition: background-color 0.2s ease;
 }
 
+.day.completed {
+    background-color: skyblue;
+}
 
-#tracker {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 12px;
-    justify-items: center;
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
 }
