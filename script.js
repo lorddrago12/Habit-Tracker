@@ -1,222 +1,95 @@
 /* ============================= */
-/* GET TODAY'S DATE INFORMATION */
+/* DATE INFO */
 /* ============================= */
 
-/* Create a Date object (gives current date & time) */
-var date = new Date();
-console.log(date);
+const date = new Date();
+const currentMonth = date.getMonth();
+const currentDate = date.getDate();
+const currentYear = date.getFullYear();
 
-/* Extract useful date values */
-var currentMonth = date.getMonth();   // 0–11
-var currentDate  = date.getDate();    // 1–31
-var currentYear  = date.getFullYear();
-
-console.log(currentMonth);
-console.log(currentDate);
-console.log(currentYear);
-
-
-/* ============================= */
-/* IMPORTANT DATE CONSTANTS */
-/* ============================= */
-
-/* Month names — index matches getMonth() */
-var months = [
-    "January",   // 0
-    "February",  // 1
-    "March",     // 2
-    "April",     // 3
-    "May",       // 4
-    "June",      // 5
-    "July",      // 6
-    "August",    // 7
-    "September", // 8
-    "October",   // 9
-    "November",  // 10
-    "December"   // 11
+const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
 ];
 
+document.getElementById("title").innerText = months[currentMonth];
 
 /* ============================= */
-/* SET THE MONTH TITLE */
+/* HABIT TITLE */
 /* ============================= */
 
-/* Grab the title element */
-var title = document.getElementById("title");
-
-/* Show the current month name */
-title.innerHTML = months[currentMonth];
-
-
-/* ============================= */
-/* UPDATE HABIT TITLE ON CLICK */
-/* ============================= */
-
-/* Reference the habit title */
-var habitTitle = document.getElementById("habit-title");
-
-/* Change habit when clicked */
-habitTitle.onclick = function () {
-
-    /* Ask user for a habit */
-    let habits = prompt("What's your habit?", habitTitle.innerHTML);
-
-    /* If user cancels or enters nothing */
-    if (!habits || habits.length === 0) {
-        habitTitle.innerHTML = "Click to set your habit";
-    }
-    else {
-        /* Update habit title */
-        habitTitle.innerHTML = habits;
-    }
+const habitTitle = document.getElementById("habit-title");
+habitTitle.onclick = () => {
+    const habit = prompt("What's your habit?");
+    if (habit) habitTitle.innerText = habit;
 };
 
-
 /* ============================= */
-/* DAYS IN CURRENT MONTH */
-/* ============================= */
-
-/* Number of days in each month */
-var daysInTheMonthList = [
-    31, 28, 31, 30, 31, 30,
-    31, 31, 30, 31, 30, 31
-];
-
-/* Get days for the current month */
-var daysInTheMonth = daysInTheMonthList[currentMonth];
-// Example: index 5 → June → 30 days
-
-
-/* ============================= */
-/* TOTAL DAYS COUNTER */
+/* DAYS IN MONTH */
 /* ============================= */
 
-var daysCompleted = 0;
+const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+const tracker = document.getElementById("tracker");
+const totalDays = document.getElementById("total-days");
 
-/* Reference the counter text */
-var totalDays = document.getElementById("total-days");
-
-/* Initial counter text */
-totalDays.innerHTML = "0/" + daysInTheMonth;
-
+let daysCompleted = 0;
 
 /* ============================= */
-/* BUILD CALENDAR DAYS */
+/* BUILD DAYS */
 /* ============================= */
 
-/* Reference the tracker grid */
-var tracker = document.getElementById("tracker");
-
-/* Create each day dynamically */
-for (var i = 1; i <= daysInTheMonth; i++) {
-
-    /* Create a new day circle */
-    var day = document.createElement("div");
+for (let i = 1; i <= daysInMonth; i++) {
+    const day = document.createElement("div");
     day.className = "day";
-    day.innerHTML = i;
+    day.id = `day-${i}`;
+    day.innerText = i;
 
-    /* Highlight today */
-    if (i === currentDate) {
-        day.style.border = "3px solid black";
-        day.style.backgroundColor = "skyblue";
+    const storageKey = `${currentMonth + 1}-${i}-${currentYear}`;
+
+    if (localStorage.getItem(storageKey) === "true") {
+        day.classList.add("completed");
+        daysCompleted++;
     }
 
-    /* Toggle completion on click */
-    day.onclick = function () {
+    if (i === currentDate) {
+        day.style.border = "3px solid black";
+    }
 
-        /* Toggle completed state */
-        this.classList.toggle("completed");
+    day.onclick = () => {
+        day.classList.toggle("completed");
 
-        /* Update completed count */
-        updateCompletedCount();
+        const completed = day.classList.contains("completed");
+        localStorage.setItem(storageKey, completed);
+
+        daysCompleted += completed ? 1 : -1;
+        updateCounter();
     };
 
-    /* Add day to calendar */
     tracker.appendChild(day);
 }
 
-
 /* ============================= */
-/* UPDATE COMPLETED COUNTER */
+/* COUNTER */
 /* ============================= */
 
-function updateCompletedCount() {
-
-    /* Count completed days */
-    daysCompleted =
-        document.querySelectorAll(".day.completed").length;
-
-    /* Update text */
-    totalDays.innerHTML =
-        daysCompleted + "/" + daysInTheMonth;
+function updateCounter() {
+    totalDays.innerText = `${daysCompleted}/${daysInMonth}`;
 }
 
+updateCounter();
 
 /* ============================= */
-/* DEBUG LOGS */
+/* RESET */
 /* ============================= */
 
-console.log("Days in month:", daysInTheMonth);
-console.log("Current date:", currentDate);
+document.getElementById("resetButton").onclick = () => {
+    for (let i = 1; i <= daysInMonth; i++) {
+        const key = `${currentMonth + 1}-${i}-${currentYear}`;
+        localStorage.removeItem(key);
 
-/* ============================= */
-/* CHECK STORAGE AND UPDATE COMPLETED ARRAY */
-/* ============================= */
-
-for (var i=0; i < currentDate; i++) {
-    var tempString =
-    "" + (currentMonth + 1) + "-" + (i + 1) + "-" + currentYear;
-    console.log(tempString);
-    
-    var choosenDay = localStorage.getItem(tempString);
-    console.log(i + 1 + ": " + choosenDay);
-    var choosenDayDiv = document.getElementById("day" + (i + 1));
-    if (choosenDay === "true") {
-        choosenDayDiv.style.backgroundColor = "skyblue";
-    } else if (choosenDay === "false") {
-        choosenDayDiv.style.backgroundColor = "white";
-    }
-}
-
-var dayDivs = document.querySelectorAll(".day");
-for (var i=0, i < currentDate; i++) {
-    dayDivs[i].onclick = function (e) {
-        var num = e.target.innerText;
-        var selectedDate = document.getElementById(e.target.id);
-        var storageString = 
-        "" + (currentMonth + 1) + "-" + currentYear;
-        
-    if(localStorage.getItem(storageString) === "false"){
-        selectedDate.style.backgroundColor = "skyblue";
-        localStorage.setItem(storageString, true);
-        daysCompleted++;
-    } else if(localStorage.getItem(storageString) === "true"){
-        selectedDate.style.backgroundColor = "white";
-        localStorage.setItem(storageString, false);
-        daysCompleted--;
+        document.getElementById(`day-${i}`).classList.remove("completed");
     }
 
-    totalDays.innerHTML = daysCompleted + "/" + dayCount;
-    console.log(daysCompleted, currentDate);
-    if(daysCompleted === currentDate){
-        alert("great progress");
-    }
-    }
-}
-
-/* ============================= */
-/* RESET BUTTON */
-/* ============================= */
-
-var resetButton = document.getElementById("resetbutton")
-resetButton.onclick = function () {
-    for (var i = 0; i < dayCount; i++)
-        var tempStrings = 
-            "" + (currentMonth + 1) + "-" + (i + 1) + "-" + currentYear;
-        console.log(tempStrings);
-        localStorage.setItem(tempStrings ,"false");
-        var curDay = document.getElementById("day" + (i + 1));
-        curDay.style.backgroundColor = "white";
-}
-daysCompleted = 0;
-totalDays.innerHTML = daysCompleted + "/" + daysInTheMonth;
+    daysCompleted = 0;
+    updateCounter();
+};
