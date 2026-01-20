@@ -158,3 +158,10 @@ completedDays / totalDays
 
 This project is intentionally simple and beginner-friendly.  
 The goal is to understand **how a real interactive web app works** without relying on frameworks.
+
+---
+
+## 🍿 Preview
+
+
+<img width="1920" height="1440" alt="948shots_so" src="https://github.com/user-attachments/assets/8a26df64-3898-41be-88dd-1be3fd06905a" />
