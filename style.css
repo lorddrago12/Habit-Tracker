@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Kindegarten', sans-serif;
-    background-image: url('Images/Background.jpg'); /* SAME AS BEFORE */
+    background-image: url('Images/Background.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
